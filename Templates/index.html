@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SafeRoute: Smart Path Finder</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f0f4f9;
+      }
+      form {
+        margin: 20px auto;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        width: 60%;
+      }
+      select,
+      input[type="range"] {
+        padding: 8px;
+        margin: 5px;
+        width: 40%;
+      }
+      .map {
+        width: 90%;
+        height: 550px;
+        margin: 20px auto;
+      }
+      .stats {
+        background: #fff;
+        padding: 10px;
+        margin: 10px auto;
+        border-radius: 8px;
+        width: 60%;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🧭 SafeRoute – Distance + Safety Optimized Path</h2>
+    <form method="POST">
+      <select name="start" required>
+        <option value="">Select Start</option>
+        {% for p in places %}
+        <option value="{{p}}">{{p}}</option>
+        {% endfor %}
+      </select>
+      <select name="end" required>
+        <option value="">Select Destination</option>
+        {% for p in places %}
+        <option value="{{p}}">{{p}}</option>
+        {% endfor %}
+      </select>
+      <br />
+      <label>Safety ↔ Distance Preference</label><br />
+      <input type="range" name="alpha" min="0" max="1" step="0.1" value="0.5" />
+      <br />
+      <button type="submit">Find Route</button>
+    </form>
+
+    {% if stats %}
+    <div class="stats">
+      <p><b>Total Distance:</b> {{stats.distance}} km</p>
+      <p><b>Average Safety:</b> {{stats.safety}}</p>
+      <p><b>Estimated Time:</b> {{stats.time}} mins</p>
+    </div>
+    {% endif %}
+
+    <div class="map">{{ map|safe }}</div>
+  </body>
+</html>
